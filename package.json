@@ -1,0 +1,27 @@
+{
+  "name": "project1",
+  "version": "0.0.1",
+  "description": "open data d3.js chart",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ewout-Jaspers/project1.git"
+  },
+  "author": "Ewout Jaspers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ewout-Jaspers/project1/issues"
+  },
+  "homepage": "https://github.com/Ewout-Jaspers/project1#readme",
+  "dependencies": {
+    "d3": "^5.7.0"
+  },
+  "devDependencies": {
+    "parcel": "^1.11.0"
+  }
+}
