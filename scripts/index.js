@@ -31,12 +31,19 @@ Promise.all([
     const variables = ["Invoerwaarde_1", "Uitvoerwaarde_2"];
     console.log(data_cn)
     console.log(data_uk);
-    function drawChart(div, country, data, variables, title) {
-        const margin = { top: 10, right: 20, bottom: 30, left: 50 };
+    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    const colours = ["#005EB8", "#ff7f00"]
+    function drawChart(div, country, data, variables, title, margin, colours) {
+        div.append("h3")
+            .text(title);
         const height = 400 - margin.top - margin.bottom;
         const width = 600 - margin.right - margin.left;
         const Year = data.map( d => d.Perioden.substring(0,4));
-        const maxValue = d3.max(data, (d) => d[variables[0]]) * 1.15;
+        let maxValueArray = [];
+        for(let i = 0; i < variables.length; i++){
+           maxValueArray[i] = d3.max(data, (d) => d[variables[i]]); 
+        }
+        const maxValue = d3.max(maxValueArray, (d) => d) * 1.10;
         const fontSize = "0.9rem";
         const fontFamily = "BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,'Helvetica Neue',sans-serif"
         
@@ -56,8 +63,7 @@ Promise.all([
 
         const yAxis = d3.axisLeft(yScale)
                         .tickFormat(d3.format("~s"));;
-          
-        
+       
         const svg = div
             .append("svg")
             .attr("width", width + margin.right + margin.left)
@@ -69,19 +75,23 @@ Promise.all([
             .append('g')
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         
-        const linedata = d3.line()
-            .x((d, i) => xScale(Year[i]))
-            .y(d => yScale(d[variables[0]]));
+        for(let i=0; i < variables.length; i++) {
+
+            const linedata = d3.line()
+                .x((d, i) => xScale(Year[i]))
+                .y(d => yScale(d[variables[i]]));
 
 
-        chart.append("path")
-            .data([data])
-            .attr("class", "line " + country)
-            .style("stroke", "red")
-            .style("stroke-width", "3px")
-            .style("fill", "none")
-            .attr("d", linedata);
-            
+            chart.append("path")
+                .data([data])
+                .attr("class", "line " + country + " " + i)
+                .style("stroke", colours[i])
+                .style("stroke-width", "3px")
+                .style("fill", "none")
+                .attr("d", linedata);
+        }
+       
+
         chart.append('g')
              .attr("class", "x-axis " + country)
              .style("color", "white")
@@ -96,15 +106,11 @@ Promise.all([
              .style("font-size", fontSize)
              .style("font-family", fontFamily)
              .call(yAxis);
-        
-        
-      
 
-        
-        
  
     }
-    drawChart(div, "uk", data_uk.value, variables, "NL import from UK");
+    drawChart(div, "uk", data_uk.value, variables, "NL import from UK", margin, colours);
+    drawChart(div, "cn", data_cn.value, variables, "NL import from China", margin, colours);
 
      
     
