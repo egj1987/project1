@@ -25,15 +25,15 @@ Promise.all([
     d3.json(url_uk)
 ])
 .then(([data_cn, data_uk]) => {
-    console.log(d3.select("#chart"));
     const ID = "#chart";
     const div = d3.select(ID)
     const variables = ["Invoerwaarde_1", "Uitvoerwaarde_2"];
-    console.log(data_cn)
-    console.log(data_uk);
-    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    const labels = ["Import", "Export"];
+   
+    const margin = { top: 20, right: 30, bottom: 30, left: 50 };
     const colours = ["#005EB8", "#ff7f00"]
-    function drawChart(div, country, data, variables, title, margin, colours) {
+
+    function drawChart(div, country, data, variables, labels, title, margin, colours) {
         div.append("h3")
             .text(title);
         const height = 400 - margin.top - margin.bottom;
@@ -63,7 +63,8 @@ Promise.all([
 
         const yAxis = d3.axisLeft(yScale)
                         .tickFormat(d3.format("~s"));;
-       
+
+        
         const svg = div
             .append("svg")
             .attr("width", width + margin.right + margin.left)
@@ -89,8 +90,26 @@ Promise.all([
                 .style("stroke-width", "3px")
                 .style("fill", "none")
                 .attr("d", linedata);
+            
+            chart.append("text")
+                .attr("transform", "translate(" + width + "," + (yScale(data[data.length - 1][variables[i]]) - 5) + ")")
+                .style("font-size", fontSize)
+                .style("font-family", fontFamily)
+                .attr("text-anchor", "end")
+                .style("fill", "white")
+                .text(labels[i]);
         }
-       
+        
+        console.log(data[data.length -1])
+        
+        
+
+              //.attr("dy", fontSize)
+            //  .attr("x", width - margin.right)
+            //  .attr("y", d => yScale(d[variables[1]][5]))
+            //  .style("color", "white")
+             
+            // .text(labels[1])
 
         chart.append('g')
              .attr("class", "x-axis " + country)
@@ -109,11 +128,10 @@ Promise.all([
 
  
     }
-    drawChart(div, "uk", data_uk.value, variables, "NL import from UK", margin, colours);
-    drawChart(div, "cn", data_cn.value, variables, "NL import from China", margin, colours);
+    drawChart(div, "uk", data_uk.value, variables, labels, "NL import from UK", margin, colours);
+    drawChart(div, "cn", data_cn.value, variables, labels, "NL import from China", margin, colours);
 
      
     
- console.log([data_cn, data_uk.value]);
 });
 
