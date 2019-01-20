@@ -3,6 +3,7 @@ import { json } from "d3-fetch";
 import { scaleLinear, scaleBand } from "d3-scale";
 import { max } from "d3-array";
 import { axisBottom } from "d3-axis";
+import { format } from "d3-format";
 
 const d3 = {
     select,
@@ -10,7 +11,8 @@ const d3 = {
     scaleLinear,
     max,
     axisBottom,
-    scaleBand
+    scaleBand,
+    format
 };
  console.log(d3);
 const url_cn = "https://opendata.cbs.nl/ODataApi/odata/81271ned/TypedDataSet?$filter=Landen eq '720'"
@@ -41,8 +43,8 @@ Promise.all([
         const maxValue = d3.max(data, (d) => d[variables[0]]) * 1.15;
 
         const xAxis = d3.axisBottom(xScale)
-                        .tickValues(Year);
-
+                        .tickValues(Year)
+                        .tickFormat(d3.format("1000"))
 
         const yScale = d3.scaleLinear()
             .range([0, width])
@@ -52,7 +54,7 @@ Promise.all([
             .append("svg")
             .attr("width", width + margin.right + margin.left)
             .attr("height", height + margin.top + margin.bottom)
-            .style("background-color", "orange");
+            .style("background-color", "#282C34");
 
 
         const chart = svg
@@ -61,6 +63,7 @@ Promise.all([
         
         chart.append('g')
              .attr("class", "x-axis " + country)
+             .style("color", "white")
              .attr("transform", "translate(0," + height + ")")
              .call(xAxis);
         
