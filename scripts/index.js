@@ -25,10 +25,14 @@ Promise.all([
     d3.json(url_uk)
 ])
 .then(([data_cn, data_uk]) => {
+    console.log(data_cn);
+
     const ID = "#chart";
     const div = d3.select(ID)
     const variables = ["Invoerwaarde_1", "Uitvoerwaarde_2"];
     const labels = ["Import", "Export"];
+    const xLabel = "Year"
+    const yLabel = "Euro(Billions)"
    
     const margin = { top: 20, right: 30, bottom: 30, left: 50 };
     const colours = ["#005EB8", "#ff7f00"]
@@ -41,7 +45,7 @@ Promise.all([
         const Year = data.map( d => d.Perioden.substring(0,4));
         let maxValueArray = [];
         for(let i = 0; i < variables.length; i++){
-           maxValueArray[i] = d3.max(data, (d) => d[variables[i]]); 
+           maxValueArray[i] = d3.max(data, (d) => d[variables[i]] * 1000); 
         }
         const maxValue = d3.max(maxValueArray, (d) => d) * 1.10;
         const fontSize = "0.9rem";
@@ -61,10 +65,12 @@ Promise.all([
                         .tickFormat(d3.format("1000"));
 
 
-        const yAxis = d3.axisLeft(yScale)
-                        .tickFormat(d3.format("~s"));;
+        const formatValue = d3.format("~s");
 
-        
+        const yAxis = d3.axisLeft(yScale)
+                        .tickFormat( d => formatValue(d).replace('G', ''));;
+
+
         const svg = div
             .append("svg")
             .attr("width", width + margin.right + margin.left)
@@ -80,7 +86,7 @@ Promise.all([
 
             const linedata = d3.line()
                 .x((d, i) => xScale(Year[i]))
-                .y(d => yScale(d[variables[i]]));
+                .y(d => yScale(d[variables[i]] * 1000));
 
 
             chart.append("path")
@@ -92,7 +98,7 @@ Promise.all([
                 .attr("d", linedata);
             
             chart.append("text")
-                .attr("transform", "translate(" + width + "," + (yScale(data[data.length - 1][variables[i]]) - 5) + ")")
+                .attr("transform", "translate(" + width + "," + (yScale(data[data.length - 1][variables[i]] * 1000 ) - 5) + ")")
                 .style("font-size", fontSize)
                 .style("font-family", fontFamily)
                 .attr("text-anchor", "end")
@@ -100,16 +106,6 @@ Promise.all([
                 .text(labels[i]);
         }
         
-        console.log(data[data.length -1])
-        
-        
-
-              //.attr("dy", fontSize)
-            //  .attr("x", width - margin.right)
-            //  .attr("y", d => yScale(d[variables[1]][5]))
-            //  .style("color", "white")
-             
-            // .text(labels[1])
 
         chart.append('g')
              .attr("class", "x-axis " + country)
@@ -118,6 +114,13 @@ Promise.all([
              .style("font-family", fontFamily)
              .attr("transform", "translate(0," + height + ")")
              .call(xAxis);
+        
+        chart.append("g")
+             .attr("transform", "translate(" + (width / 2) + "," + (height + margin.bottom * 0.5) + ")")
+             .attr("class", "x-label " + country)
+             .style("text-anchor", "middle")
+             .text("xLabel");
+             
         
         chart.append('g')
              .attr("class", "y-axis " + country)
