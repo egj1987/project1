@@ -34,10 +34,10 @@ Promise.all([
     const xLabel = "Year"
     const yLabel = "Euro(Billions)"
    
-    const margin = { top: 20, right: 30, bottom: 30, left: 50 };
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
     const colours = ["#005EB8", "#ff7f00"]
 
-    function drawChart(div, country, data, variables, labels, title, margin, colours) {
+    function drawChart(div, country, data, variables, labels, xLabel, yLabel, title, margin, colours) {
         div.append("h3")
             .text(title);
         const height = 400 - margin.top - margin.bottom;
@@ -128,11 +128,28 @@ Promise.all([
              .style("font-size", fontSize)
              .style("font-family", fontFamily)
              .call(yAxis);
+        
+        chart.append("text")
+            .attr("x", (width / 2))
+            .attr("y", (height + margin.bottom * 0.75))
+            .style("fill", "white")
+            .style("font-size", fontSize)
+            .style("font-family", fontFamily)
+            .text(xLabel)
+
+        chart.append("text")
+             .attr("y", 0 - (margin.left * 0.65))
+             .attr("x", 0 - (height /2 ))
+             .attr("transform", "rotate(-90)")
+             .style("fill", "white")
+             .style("font-size", fontSize)
+             .style("font-family", fontFamily)
+             .text(yLabel)
 
  
     }
-    drawChart(div, "uk", data_uk.value, variables, labels, "NL import from UK", margin, colours);
-    drawChart(div, "cn", data_cn.value, variables, labels, "NL import from China", margin, colours);
+    drawChart(div, "uk", data_uk.value, variables, labels, xLabel, yLabel, "Dutch import and export in Goods - UK", margin, colours);
+    drawChart(div, "cn", data_cn.value, variables, labels, xLabel, yLabel, "Dutch import and export in Goods- China", margin, colours);
 
      
     
