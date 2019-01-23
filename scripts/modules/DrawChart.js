@@ -22,6 +22,8 @@ function drawChart(div, country, data, variables, labels, xLabel, yLabel, title,
     let divWidth = parseInt(div.style("width"));
     if(divWidth > 700){
         divWidth = 700;
+    } else if(divWidth < 375){
+        divWidth = 375;
     }
     console.log(divWidth);
     const width =  divWidth - margin.right - margin.left;
