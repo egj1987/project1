@@ -22,11 +22,15 @@ function drawChart(div, country, data, variables, labels, xLabel, yLabel, title,
     let divWidth = parseInt(div.style("width"));
     if(divWidth > 700){
         divWidth = 700;
-    } else if(divWidth < 375){
-        divWidth = 375;
+    } else if(divWidth < 300){
+        divWidth = 300;
     }
-    console.log(divWidth);
-    const width =  divWidth - margin.right - margin.left;
+    let ticksChange = 0;
+    if(divWidth < 450){
+        ticksChange = 2
+    }
+    
+    const width = divWidth - margin.right - margin.left;
     const height = divWidth * 0.6 - margin.top - margin.bottom;
     //const width = 600 - margin.right - margin.left;
     const Year = data.map(d => d.Perioden.substring(0, 4));
@@ -48,7 +52,7 @@ function drawChart(div, country, data, variables, labels, xLabel, yLabel, title,
 
 
     const xAxis = d3.axisBottom(xScale)
-        .tickValues(Year)
+        .tickValues(Year.filter( (d,i) => !((Year.length - 1 - i)%ticksChange) ))
         .tickFormat(d3.format("1000"));
 
 
@@ -126,7 +130,7 @@ function drawChart(div, country, data, variables, labels, xLabel, yLabel, title,
 
     chart.append("text")
         .attr("y", 0 - (margin.left * 0.65))
-        .attr("x", 0 - (height / 2))
+        .attr("x", 0 - ((height + margin.bottom + margin.top) / 2))
         .attr("transform", "rotate(-90)")
         .style("fill", "white")
         .style("font-size", fontSize)
