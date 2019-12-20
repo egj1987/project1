@@ -64,6 +64,8 @@ function drawChart(div, country, data, variables, labels, xLabel, yLabel, title,
 
     const svg = div
         .append("svg")
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .attr("id","svg" + country)
         .attr("width", width + margin.right + margin.left)
         .attr("height", height + margin.top + margin.bottom)
         .style("background-color", "#282C34");

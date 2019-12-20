@@ -27,7 +27,7 @@ Promise.all([
     d3.json(url_uk)
 ])
 .then(([data_cn, data_uk]) => {
-    console.log(data_cn);
+    
 
     const ID = "#chart";
     const div = d3.select(ID)
@@ -61,12 +61,18 @@ Promise.all([
         /* init - you can init any event */
         throttle("resize", "optimizedResize");
     })();
-
+    let basewidth = window.innerWidth;
     // handle event
     window.addEventListener("optimizedResize", function () {
-        div.html("");
-        drawChart(div, "uk", data_uk.value, variables, labels, xLabel, yLabel, "Dutch import and export in Goods - UK", margin, colours);
-        drawChart(div, "cn", data_cn.value, variables, labels, xLabel, yLabel, "Dutch import and export in Goods- China", margin, colours);
+        let newwidth = window.innerWidth;
+        console.log([basewidth, newwidth]);
+        if(basewidth != newwidth){
+            basewidth = newwidth;
+            div.html("");
+            drawChart(div, "uk", data_uk.value, variables, labels, xLabel, yLabel, "Dutch import and export in Goods - UK", margin, colours);
+            drawChart(div, "cn", data_cn.value, variables, labels, xLabel, yLabel, "Dutch import and export in Goods- China", margin, colours);
+        }
+        
     });
      
     

@@ -20,9 +20,10 @@
   },
   "homepage": "https://github.com/Ewout-Jaspers/project1#readme",
   "dependencies": {
-    "d3": "^5.7.0"
+    "d3": "^5.7.0",
+    "file-saver": "^2.0.0"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.11.0"
+    "parcel-bundler": "^1.12.4"
   }
 }
