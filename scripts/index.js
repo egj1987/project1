@@ -19,8 +19,10 @@ const d3 = {
     line
 };
 
-const url_cn = "https://opendata.cbs.nl/ODataApi/odata/81271ned/TypedDataSet?$filter=Landen eq '720'"
-const url_uk = "https://opendata.cbs.nl/ODataApi/odata/81271ned/TypedDataSet?$filter=Landen eq '006'"
+const url_cn =
+  "https://opendata.cbs.nl/ODataApi/odata/81271ned/TypedDataSet?$filter=Landen eq 'L008575'";
+const url_uk =
+  "https://opendata.cbs.nl/ODataApi/odata/81271ned/TypedDataSet?$filter=Landen eq 'L008776'";
 
 Promise.all([
     d3.json(url_cn),
@@ -38,7 +40,7 @@ Promise.all([
    
     const margin = { top: 20, right: 30, bottom: 50, left: 50 };
     const colours = ["#005EB8", "#ff7f00"]
-
+    console.log(data_cn);
     
     drawChart(div, "uk", data_uk.value, variables, labels, xLabel, yLabel, "Dutch import and export in Goods - UK", margin, colours);
     drawChart(div, "cn", data_cn.value, variables, labels, xLabel, yLabel, "Dutch import and export in Goods- China", margin, colours);
