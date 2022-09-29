@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Ewout-Jaspers/project1#readme",
   "dependencies": {
-    "d3": "^5.7.0",
+    "d3": "^7.6.1",
     "file-saver": "^2.0.0"
   },
   "devDependencies": {
